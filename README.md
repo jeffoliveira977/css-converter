@@ -37,7 +37,7 @@
     ```bash
     cd CSS-Converter
     ```
-3.  **Open the `index.html` file in your web browser.**
+3.  **Open the `index.html` file in your web browser** or **visit the live page:** https://jeffoliveira977.github.io/css-converter/
 
 That's it! You can now start using the CSS Converter.
 
