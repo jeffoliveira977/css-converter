@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Converter</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="ntc.js"></script>
+    <script src="utils.js"></script>
+    <script src="color-converter.js"></script>
+    <script src="unit-converter.js"></script>
+    <script src="script.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <div class="w-full mb-5 fade-in max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-100 py-5">CSS Converter</h1>
+            <p class="subtitle text-sm text-gray-400 mt-1">Easily convert colors between formats (HEX/RGBA and CSS variables) and measurement units (px to rem and rem to px).</p>
+        </header>
+    
+        <main>
+            <div class="w-full mb-6">
+                <div class="flex border-b border-gray-300 justify-center gap-4 mb-4">
+                    <button class="tab-button active inline-block px-6 py-3 rounded-md shadow-md text-sm font-medium text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition" data-tab="color-converter">
+                        Convert Colors
+                    </button>
+                    <button class="tab-button inline-block px-6 py-3 rounded-md shadow-md text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition" data-tab="unit-converter">
+                        Convert Units
+                    </button>
+                </div>
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 sm:p-8 border border-gray-700">
+                    <div class="tab-content active" id="color-converter">            
+                        <h2 class="text-2xl font-bold text-center text-gray-100 mb-6">Colors ↔ Variables</h2>
+        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="conversion-mode" class="block text-sm font-medium text-gray-300 mb-1">Conversion Mode:</label>
+                                <select id="conversion-mode" class="w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border">
+                                    <option value="hex-to-vars">Convert colors to variables</option>
+                                    <option value="vars-to-color">Convert variables to colors</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <label for="prefix" class="block text-sm font-medium text-gray-300 mb-1">Variable Prefix:</label>
+                                <input type="text" id="prefix" class="w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border" placeholder="Ex: --color" value="--color">
+                            </div>
+                                
+                        </div>
+        
+                        <div class="mb-6">
+                            <label for="color-map" class="block text-sm font-medium text-gray-300 mb-1">Color Mapping (optional):</label>
+                            <textarea id="color-map" class="w-full h-32 rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border text-sm font-mono" placeholder="#ff0000: primary&#10;rgba(0, 0, 0, 0.5): semitransparent"></textarea>
+                            <p class="mt-1 text-xs text-gray-400">Format: <code class="font-mono text-gray-300">var_name: color_hex</code> (one per line)</p>
+                        </div>
+                        <div class="border-t border-gray-700 my-6">
+                    </div>
+                </div>
+    
+                <div class="tab-content hidden" id="unit-converter">
+                   
+                    <h2 class="text-2xl font-bold text-center text-gray-100 mb-6">PX ↔ REM</h2>
+    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <label for="direction" class="block text-sm font-medium text-gray-300 mb-1">Conversion direction</label>
+                            <select id="direction" class="w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border">
+                                <option value="px-to-rem">PX to REM</option>
+                                <option value="rem-to-px">REM to PX</option>
+                            </select>
+                        </div>
+                          
+                        <div>
+                            <label for="baseRemSize" class="block text-sm font-medium text-gray-300 mb-1">Base REM size</label>
+                            <input type="number" id="baseRemSize" value="16" min="1" step="1" class="w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border">
+                            <p class="mt-1 text-xs text-gray-400">Browser default: 16px</p>
+                        </div>
+                          
+                        <div>
+                            <label for="precision" class="block text-sm font-medium text-gray-300 mb-1">Precision</label>
+                            <input type="number" id="precision" value="4" min="0" max="10" step="1" class="w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border">
+                            <p class="mt-1 text-xs text-gray-400">Decimal places</p>
+                        </div>
+                    </div>
+                          
+                    <div class="mb-6">
+                        <label for="excludeProperties" class="block text-sm font-medium text-gray-300 mb-1">Properties to exclude</label>
+                        <input type="text" id="excludeProperties" placeholder="border, width, height..." class="w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border">
+                        <p class="mt-1 text-xs text-gray-400">Comma-separated</p>
+                    </div>
+                    <div class="border-t border-gray-700 my-6"></div>           
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 mb-6">
+                    <div>
+                        <label for="input-css" class="block text-sm font-medium text-gray-300 mb-1">CSS:</label>
+                        <textarea id="input-css" class="w-full h-72 rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border font-mono text-sm"></textarea>            
+                    </div>
+                  
+                    <div class="mt-4 flex gap-4"> 
+                        <div class="flex rounded-md shadow-sm flex-grow"> 
+                            <input type="url" name="css-url" id="css-url" class="w-0 flex-grow rounded-none rounded-l-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border" placeholder="https://example.com/styles.css">
+                            <button type="button" id="url-button" class="inline-flex items-center px-4 py-2 bg-gray-700 text-gray-200 rounded-r-md shadow-md cursor-pointer hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                               Load Url
+                            </button>
+                        </div>
+                        <div class="flex rounded-md shadow-sm w-full sm:w-auto"> 
+                            <div id="file-upload-button" class="inline-flex items-center px-4 py-2 bg-gray-700 text-gray-200 rounded-md shadow-md cursor-pointer hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 w-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                               Select File
+                            </div>
+                            <input type="file" id="file-upload" class="absolute w-0 h-0 p-0 overflow-hidden border-0">
+                        </div>
+                    </div>
+                                            
+                    <button id="convert-button" class="place-self-center inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                        Convert
+                    </button>
+                    <div class="hidden" id="conversion-result">
+                        <label for="output-css" class="block text-sm font-medium text-gray-300 mb-1">CSS converted:</label>
+                        <textarea id="output-css" class="w-full h-72 rounded-md bg-gray-700 border-gray-600 text-gray-100 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-20 transition py-2 px-3 border font-mono text-sm"></textarea>
+                    </div>
+                </div>
+            
+                <div class="hidden flex flex-wrap justify-center gap-4" id="result-actions">                     
+                    <button id="copy-result" class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                        Copy
+                    </button>
+                    <button id="download-result" class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4-8v12" />
+                        </svg>
+                        Download
+                    </button>
+                </div>
+            </div>
+        </div>
+            <div class="block mt-5 p-4 rounded-md" id="status"></div>
+        </main>
+    
+        <footer class="text-center mt-8 py-4 text-sm text-gray-400 border-t border-gray-800">
+            © 2025 CSS Converter
+        </footer>
+    </div>
+</html>
